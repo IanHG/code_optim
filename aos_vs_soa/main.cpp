@@ -1,5 +1,9 @@
 #include <benchmark/benchmark.h>
 
+/*
+ * Stolen from: https://www.youtube.com/watch?v=XpYORLssFW8
+ */
+
 /* Define a simple struct 
  */
 struct SimpleStruct
