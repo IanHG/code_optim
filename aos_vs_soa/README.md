@@ -1,3 +1,46 @@
+Array-Of-Structs (AoS) vs. Struct-Of-Arrays (SoA)
+-------------------------------------------------------------------------------
+
+In an Array-Of-Structs (also loosely called the Object-Oriented (OO)-approach)
+we declare a `struct`, and if we need more than one instance we create a vector
+of the `struct` type:
+```cpp
+// AoS
+struct data
+{
+   int i0;
+   int i1;
+};
+
+// Array of structures
+std::vector<data> aos;
+
+...
+
+// Access i0 of first object
+int i0_first = aos[0].i0;
+```
+
+In a Struct-Of-Arrays (also loosely known as Data-Oriented-Design (DoD)),
+we instead create a `struct` holding all our objects, where each member variable
+is held in contigous memory, *e.g.* a vector.
+```cpp
+// SoA
+struct SoA
+{
+   std::vector<int> i0s;
+   std::vector<int> i1s;
+};
+
+// Structure of arrays
+SoA soa;
+
+...
+
+// Access i0 of first "data structure"
+int i0_first = soa.i0s[0];
+```
+
 Finding cache-line size (coherency line size)
 -------------------------------------------------------------------------------
 
@@ -28,7 +71,7 @@ $ cat /sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size
 64
 ```
 
-Perf - Simple profiling
+Using `perf` - Simple profiling
 -------------------------------------------------------------------------------
 
 Run `perf` where we zoom in on `Benchmark_Aos/16`:

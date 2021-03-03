@@ -1,7 +1,13 @@
 #include <benchmark/benchmark.h>
 
+/* Define a simple struct 
+ */
 struct SimpleStruct
 {
+   /* We make it the size of a cache line 
+    * (sizeof(int) is 4, so 16 * 4 = 64) 
+    * All are initialized to 0.
+    */
    int i0  = 0;
    int i1  = 0;
    int i2  = 0;
@@ -18,15 +24,21 @@ struct SimpleStruct
    int i13 = 0;
    int i14 = 0;
    int i15 = 0;
-
+   
+   /* Update a member
+    * (for brevity we only implement this for 'i1'
+    */
    void update_i0()
    {
       ++i0;
    }
 };
 
+/* Define Struct-of-Array */
 struct Soa
 {
+   /* Here we will have an array holding each variable
+    */
    std::vector<int> i0s;
    std::vector<int> i1s;
    std::vector<int> i2s;
@@ -43,7 +55,8 @@ struct Soa
    std::vector<int> i13s;
    std::vector<int> i14s;
    std::vector<int> i15s;
-
+   
+   /* Initialize the SoA, initialize all i0s etc. to 0 */
    Soa(int N)
       :  i0s(N, 0)
       ,  i1s(N, 0)
@@ -63,7 +76,8 @@ struct Soa
       ,  i15s(N, 0)
    {
    }
-
+   
+   /* Update all i0's. Loop over vector i0s and update */
    void update_i0s()
    {
       for(auto& i : i0s)
@@ -73,8 +87,11 @@ struct Soa
    }
 };
 
+/* Benchmark the Array-of-Structs approach
+ */
 static void Benchmark_Aos(benchmark::State& s)
 {
+   // Create 2^I samples
    int N = 1 << s.range(0);
 
    std::vector<SimpleStruct> aos(N);
@@ -88,10 +105,14 @@ static void Benchmark_Aos(benchmark::State& s)
    }
 }
 
+/* Run benchmark for I in [8; 16] */
 BENCHMARK(Benchmark_Aos)->DenseRange(8, 16);
 
+/* Benchmark the Structs-of-Array approach
+ */
 static void Benchmark_Soa(benchmark::State& s)
 {
+   // Create 2^I samples
    int N = 1 << s.range(0);
 
    Soa soa(N);
@@ -102,6 +123,8 @@ static void Benchmark_Soa(benchmark::State& s)
    }
 }
 
+/* Run benchmark for I in [8; 16] */
 BENCHMARK(Benchmark_Soa)->DenseRange(8, 16);
 
+/* Create main()-function */
 BENCHMARK_MAIN();
