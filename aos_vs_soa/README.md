@@ -183,3 +183,21 @@ Benchmark_Soa/16       9976 ns         9954 ns       429623
 ```
 Here we see much less `L1-dcache-load-misses`, as all the variables we are updating are in contigous memory,
 and the CPU prefecther has a much easier time predicting what data is needed.
+
+**Q** & **A**
+-------------------------------------------------------------------------------
+**Q**: 
+If accessing all `i0`-`i15` for a single "object", which would be faster? AoS or SoA?
+
+**A**:
+In this case AoS would be faster, as all data for a single object will be placed on a single cache-line,
+and all loaded at the same time, whereas for SoA, you would have to load a cache-line for variable to update.
+
+
+**Q**:
+If accessing all `i0`-`i15` for all "objects", which would be faster? AoS or SoA?
+
+**A**:
+In this case AoS and SoA would perform equally well,
+given that in AoS you update all members for an object at the same time,
+and in SoA you update all `i0s` first, then `i1s`, etc.
