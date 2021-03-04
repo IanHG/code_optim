@@ -247,6 +247,7 @@ In the SoA approach we only load the hot data, *i.e.* the `i0s` we are working o
 and the cold data is never touched.
 Thus in this case we utilize the full cache-line we read.
 
+
 **Q** & **A**
 -------------------------------------------------------------------------------
 
@@ -267,6 +268,18 @@ given that in AoS you update all members for an object at the same time,
 and in SoA you update all `i0s` first, then `i1s`, etc.
 This is assuming that all `i0`-`i15` in the AoS approach are updated in the same way
 to utilize SIMD (*i.e.* using a Similar-Instruction).
+
+Disclaimer
+-------------------------------------------------------------------------------
+
+This particular example is of course concieved and arguably skewed,
+but it does still mimic common data layout and access patterns that you would see
+in many code bases applying OOP. Also this is not a call to abandon the use of OOP, 
+but an encouragement to reason about the implications of applying 
+the classical OOP approach of dividing all types into classes or structures,
+instantiated as individual objects. OOP and DOD are not each others opposites,
+and combining the two makes for a robust and high performance design 
+that will run efficiently on todays modern hardware.
 
 Quote
 -------------------------------------------------------------------------------
