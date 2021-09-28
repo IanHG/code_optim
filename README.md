@@ -20,6 +20,16 @@ $ make
 $ make install
 ```
 
+Including it in your code:
+```cpp
+#include <benchmark/benchmark.h>
+```
+
+Compiling and linking:
+```sh
+$ gcc -lbenchmark -lpthread <source_file>...
+```
+
 Perf
 ===============================================================================
 
